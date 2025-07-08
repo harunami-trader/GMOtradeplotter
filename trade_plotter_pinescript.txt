@@ -1,0 +1,34 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © HARUNAMItrader
+
+//@version=6
+indicator("trade_plotter_<銘柄名F>" ,shorttitle ="plotter" ,overlay = true,max_labels_count = 500)
+
+color0 =input.color(color.white,"text color")
+colorLe =input.color(color.new(color.aqua,15) ,"Le LongEntry")
+colorLg =input.color(color.new(color.green,15) ,"Lg LongGain")
+colorLl =input.color(color.new(color.blue,15) ,"Ll LongLoss")
+colorSe =input.color(color.new(color.fuchsia,15) ,"Se ShortEntry")
+colorSg =input.color(color.new(color.orange,15) ,"Sg ShortGain")
+colorSl =input.color(color.new(color.red,15) ,"Sl ShortLoss")
+
+sizedisplay = input.bool(false ,"ロット数表示")
+pldisplay =input.bool(false , "損益額表示")
+textsize1 = input.string(size.normal, "文字のサイズ", [size.auto ,size.huge, size.large, size.normal, size.small, size.tiny])
+
+
+//trade1
+trade1timestamp = <1A>
+trade1category ="<1B>"
+trade1price = <1C>
+string trade1size = sizedisplay==true?"<1D>" :na
+string trade1pl = sizedisplay==true and (trade1category =="Lg" or trade1category =="Ll" or trade1category =="Sg" or trade1category =="Sl")?"<1E>" :na
+
+var int trade1time = na
+if time_close[1] <=trade1timestamp and time_close>trade1timestamp
+    trade1time :=time
+color trade1color = trade1category =="Le"?colorLe : trade1category =="Lg"?colorLg : trade1category =="Ll"?colorLl : trade1category =="Se"?colorSe : trade1category =="Sg"?colorSg : trade1category =="Sl"?colorSl : color0
+string trade1label = trade1category =="Le"?"up" : trade1category =="Lg"?"down" : trade1category =="Ll"?"down" : trade1category =="Se"?"down" : trade1category =="Sg"?"up" : trade1category =="Sl"?"up" : "up"
+if barstate.islast
+    trade1label = label.new(trade1time ,trade1price ,trade1size+" "+trade1category+" "+trade1pl ,xloc.bar_time ,color=trade1color ,style = trade1label =="up"? label.style_label_up :label.style_label_down  ,textcolor = color0 ,size =textsize1)    
+//trade1_fin

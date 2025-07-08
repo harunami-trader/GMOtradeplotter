@@ -1,0 +1,16 @@
+# ビルド関連ファイル
+build/
+dist/
+*.spec
+
+# データファイル
+*.csv
+*.json
+
+# Pythonキャッシュ
+__pycache__/
+*.pyc
+
+# OS固有ファイル
+.DS_Store
+Thumbs.db
