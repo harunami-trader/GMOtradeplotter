@@ -28,7 +28,6 @@ var int trade1time = na
 if time_close[1] <=trade1timestamp and time_close>trade1timestamp
     trade1time :=time
 color trade1color = trade1category =="Le"?colorLe : trade1category =="Lg"?colorLg : trade1category =="Ll"?colorLl : trade1category =="Se"?colorSe : trade1category =="Sg"?colorSg : trade1category =="Sl"?colorSl : color0
-string trade1label = trade1category =="Le"?"up" : trade1category =="Lg"?"down" : trade1category =="Ll"?"down" : trade1category =="Se"?"down" : trade1category =="Sg"?"up" : trade1category =="Sl"?"up" : "up"
 if barstate.islast
-    trade1label = label.new(trade1time ,trade1price ,trade1size+" "+trade1category+" "+trade1pl ,xloc.bar_time ,color=trade1color ,style = trade1label =="up"? label.style_label_up :label.style_label_down  ,textcolor = color0 ,size =textsize1)    
+    trade1label = label.new(trade1time ,trade1price ,trade1size+" "+trade1category+" "+trade1pl ,xloc.bar_time ,color=trade1color ,style =  trade1category =="Le" or trade1category =="Se"?label.style_label_right :label.style_label_left  ,textcolor = color0 ,size =textsize1)    
 //trade1_fin
