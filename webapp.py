@@ -217,9 +217,9 @@ if uploaded_file is not None:
 st.info("""
 
 **Trade Plotter for Pine Script**　概要\n
-・[Trade Plotter for Pine Script]はGMOクリック証券の取引履歴からTradingViewのPineScriptで取引履歴をチャート上に表示するためのwebアプリです。
+・[Trade Plotter for Pine Script]はGMOクリック証券の取引履歴からTradingViewのPineScriptで取引履歴をチャート上に表示するためのwebアプリです。\n
 
-**使用方法**
+**使用方法**\n
 0. GMOクリック証券にログインし、積算表から取引履歴(CSVファイル)をダウロードしてください。
 1. [Browse files]ボタン（またはドラッグ&ドロップ）で取引履歴(CSVファイル)を選択してください。
 2. チャートに表示したい銘柄を選択してください。
@@ -228,7 +228,7 @@ st.info("""
 5. 生成されたPine Scriptを全文コピーしてください。（Scriptの右上に[Copy to clipboard]のボタンがあります。）
 6. コピーしたPine ScriptをTradingViewのPineエディタにペーストしてください。（+新規作成→インジケーターを選択→全文消去してからペーストしてください。）
 7. チャートに追加ボタンを押して、しばらくおまちください。（チャートに表示されるまで時間がかかる場合があります。）
-
+\n
 **注意事項**\n
 ・　チャートのティッカーはGMOクリック証券の価格となるべく近いものにしてください。（米国NQ100ならNQ1!など）\n
 ・　チャートに追加ボタンを押してもチャートに表示されない、時間がかかりすぎる場合は取引の範囲を少なくしてください。\n
