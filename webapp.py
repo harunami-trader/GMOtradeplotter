@@ -59,9 +59,9 @@ def process_gmo_history(df, selected_brand, start_trade_index, end_trade_index):
         nq100_df[col_実現損益] = pd.to_numeric(nq100_df[col_実現損益], errors='coerce')
 
         def get_trade_category(row):
-            if row[col_取引区分] == 'CFD新規':
+            if row[col_取引区分] in ['CFD新規', 'FXネオ新規']:
                 return 'Le' if row[col_売買区分] == '買' else 'Se'
-            elif row[col_取引区分] in ['CFD決済', 'CFDロスカット']:
+            elif row[col_取引区分] in ['CFD決済', 'CFDロスカット', 'FXネオ決済', 'FXネオロスカット']:
                 if row[col_売買区分] == '売':
                     return 'Lg' if row[col_実現損益] >= 0 else 'Ll'
                 elif row[col_売買区分] == '買':
