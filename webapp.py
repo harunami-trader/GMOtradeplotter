@@ -76,7 +76,7 @@ def process_gmo_history(df, selected_brand, start_trade_index, end_trade_index):
         st.error(f"データの処理中にエラーが発生しました: {e}")
         return pd.DataFrame()
 
-def update_pinescript(pinescript_template_path, processed_trades_data, selected_brand):
+def update_pinescript(pinescript_template_path, processed_trades_data, selected_brand, use_japanese):
     """テンプレートと取引データからPine Scriptを生成する"""
     try:
         # 先にデータが空でないかチェック
@@ -89,6 +89,15 @@ def update_pinescript(pinescript_template_path, processed_trades_data, selected_
 
         # <銘柄名F> を選択された銘柄名に置換
         pinescript_content = pinescript_content.replace('<銘柄名F>', selected_brand)
+
+        # 日本語化が有効な場合、テンプレート内のハードコードされたカテゴリ名も置換
+        if use_japanese:
+            pinescript_content = pinescript_content.replace('"Le"', '"ﾛﾝｸﾞｴﾝﾄﾘ"' )
+            pinescript_content = pinescript_content.replace('"Lg"', '"ﾛﾝｸﾞ利確"' )
+            pinescript_content = pinescript_content.replace('"Ll"', '"ﾛﾝｸﾞ損切"' )
+            pinescript_content = pinescript_content.replace('"Se"', '"ｼｮｰﾄｴﾝﾄﾘ"' )
+            pinescript_content = pinescript_content.replace('"Sg"', '"ｼｮｰﾄ利確"' )
+            pinescript_content = pinescript_content.replace('"Sl"', '"ｼｮｰﾄ損切"' )
 
         start_marker = '//trade1'
         end_marker = '//trade1_fin'
@@ -180,6 +189,10 @@ if uploaded_file is not None:
 
                     # 4. Pine Script生成ボタン
                     st.header("4. Pine Scriptを生成")
+
+                    # 日本語化オプション (デフォルトでチェックを入れる)
+                    use_japanese = st.checkbox("取引カテゴリを日本語化する (Le → ﾛﾝｸﾞｴﾝﾄﾘなど)", value=True)
+
                     if st.button("生成実行"):
                         if end_index - start_index + 1 > 200:
                             st.warning("一度に処理できるのは最大200件までです。範囲を調整してください。")
@@ -188,13 +201,22 @@ if uploaded_file is not None:
                             processed_df = process_gmo_history(all_trades_df, selected_brand, start_index, end_index)
 
                             if not processed_df.empty:
+                                # 日本語化オプションが選択されている場合、カテゴリを置換
+                                if use_japanese:
+                                    japanese_map = {
+                                        "Le": "ﾛﾝｸﾞｴﾝﾄﾘ", "Lg": "ﾛﾝｸﾞ利確", "Ll": "ﾛﾝｸﾞ損切",
+                                        "Se": "ｼｮｰﾄｴﾝﾄﾘ", "Sg": "ｼｮｰﾄ利確", "Sl": "ｼｮｰﾄ損切"
+                                    }
+                                    # mapを使って置換。見つからない場合は元の値を維持
+                                    processed_df['TradeCategory'] = processed_df['TradeCategory'].map(japanese_map).fillna(processed_df['TradeCategory'])
+
                                 st.success(f"{len(processed_df)}件の取引データを処理しました。")
                                 
                                 # Pine Script更新実行
                                 template_path = 'trade_plotter_pinescript.txt' # 相対パスに変更
                                 processed_trades_list = processed_df.to_dict(orient='records')
                                 
-                                final_script = update_pinescript(template_path, processed_trades_list, selected_brand)
+                                final_script = update_pinescript(template_path, processed_trades_list, selected_brand, use_japanese)
 
                                 if final_script:
                                     st.success("Pine Scriptの生成に成功しました。")
@@ -218,7 +240,7 @@ st.info("""
 
 **Trade Plotter for Pine Script**　概要\n
 ・[Trade Plotter for Pine Script]はGMOクリック証券の取引履歴からTradingViewのPineScriptで取引履歴をチャート上に表示するためのwebアプリです。\n
-・CFDとFXネオの取引履歴に対応しています。\n
+・CFDとFXネオの取引履歴に対応しています。
 **使用方法**\n
 0. GMOクリック証券にログインし、積算表から取引履歴(CSVファイル)をダウロードしてください。（*取引の履歴のみ選択してください。スワップや振替の履歴はなるべく含めないようにしてください。）
 1. [Browse files]ボタン（またはドラッグ&ドロップ）で取引履歴(CSVファイル)を選択してください。
