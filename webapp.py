@@ -240,7 +240,7 @@ st.info("""
 
 **Trade Plotter for Pine Script**　概要\n
 ・[Trade Plotter for Pine Script]はGMOクリック証券の取引履歴からTradingViewのPineScriptで取引履歴をチャート上に表示するためのwebアプリです。\n
-・CFDとFXネオの取引履歴に対応しています。
+・CFDとFXネオの取引履歴に対応しています。\n
 **使用方法**\n
 0. GMOクリック証券にログインし、積算表から取引履歴(CSVファイル)をダウロードしてください。（*取引の履歴のみ選択してください。スワップや振替の履歴はなるべく含めないようにしてください。）
 1. [Browse files]ボタン（またはドラッグ&ドロップ）で取引履歴(CSVファイル)を選択してください。
